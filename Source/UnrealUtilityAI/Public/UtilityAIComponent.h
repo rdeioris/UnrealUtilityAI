@@ -41,6 +41,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI")
 	bool bInvertPriority;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI")
+	bool bRandomizeOnEquality;
+
 	UPROPERTY(BlueprintAssignable, Category = "Utility AI", meta = (DisplayName = "On UtilityAI Action Spawned"))
 	FUtilityAIActionSpawned OnUtilityAIActionSpawned;
 

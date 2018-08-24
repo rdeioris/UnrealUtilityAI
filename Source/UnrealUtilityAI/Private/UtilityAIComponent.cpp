@@ -43,9 +43,15 @@ bool UUtilityAIComponent::CheckLowestScore(UUtilityAIAction* Current, UUtilityAI
 	if (!Best)
 		return true;
 
-	if (bInvertPriority && Best->LastScore == Current->LastScore)
+	if (Best->LastScore == Current->LastScore)
 	{
-		return true;
+		if (bInvertPriority)
+			return true;
+		if (bRandomizeOnEquality)
+		{
+			return 0.5f > FMath::RandRange(0.0f, 1.0f);
+		}
+		return false;
 	}
 
 	if (Best->LastScore > Current->LastScore)
@@ -63,9 +69,15 @@ bool UUtilityAIComponent::CheckHighestScore(UUtilityAIAction* Current, UUtilityA
 	if (!Best)
 		return true;
 
-	if (bInvertPriority && Best->LastScore == Current->LastScore)
+	if (Best->LastScore == Current->LastScore)
 	{
-		return true;
+		if (bInvertPriority)
+			return true;
+		if (bRandomizeOnEquality)
+		{
+			return 0.5f > FMath::RandRange(0.0f, 1.0f);
+		}
+		return false;
 	}
 
 	if (Best->LastScore < Current->LastScore)
