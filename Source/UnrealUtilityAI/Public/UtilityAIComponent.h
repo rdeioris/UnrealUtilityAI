@@ -12,12 +12,12 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FUtilityAIActionChanged, UUtilityAI
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUtilityAIActionNotAvailable);
 
 
-UCLASS(BlueprintType, Blueprintable, ClassGroup=(AI), meta=(BlueprintSpawnableComponent) )
+UCLASS(BlueprintType, Blueprintable, ClassGroup = (AI), meta = (BlueprintSpawnableComponent))
 class UNREALUTILITYAI_API UUtilityAIComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	// Sets default values for this component's properties
 	UUtilityAIComponent();
 
@@ -25,7 +25,7 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
@@ -35,13 +35,19 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI")
 	bool bIgnoreZeroScore;
 
-	UPROPERTY(BlueprintAssignable, Category = "Utility AI")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI")
+	bool bUseLowestScore;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI")
+	bool bInvertPriority;
+
+	UPROPERTY(BlueprintAssignable, Category = "Utility AI", meta = (DisplayName = "On UtilityAI Action Spawned"))
 	FUtilityAIActionSpawned OnUtilityAIActionSpawned;
 
-	UPROPERTY(BlueprintAssignable, Category = "Utility AI")
+	UPROPERTY(BlueprintAssignable, Category = "Utility AI", meta = (DisplayName = "On UtilityAI Action Changed"))
 	FUtilityAIActionChanged OnUtilityAIActionChanged;
 
-	UPROPERTY(BlueprintAssignable, Category = "Utility AI")
+	UPROPERTY(BlueprintAssignable, Category = "Utility AI", meta = (DisplayName = "On UtilityAI Action Not Available"))
 	FUtilityAIActionNotAvailable OnUtilityAIActionNotAvailable;
 
 	UPROPERTY()
@@ -49,8 +55,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Utility AI")
 	TArray<UUtilityAIAction*> GetActionInstances() const;
-	
 
-	UUtilityAIAction* LastAction;
+protected:
+
+	UUtilityAIAction * LastAction;
 	APawn* LastPawn;
+
+	bool CheckLowestScore(UUtilityAIAction* Current, UUtilityAIAction* Best) const;
+	bool CheckHighestScore(UUtilityAIAction* Current, UUtilityAIAction* Best) const;
 };

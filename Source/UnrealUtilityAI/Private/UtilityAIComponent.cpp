@@ -31,11 +31,51 @@ void UUtilityAIComponent::BeginPlay()
 	{
 		UUtilityAIAction* Action = NewObject<UUtilityAIAction>(Controller, ActionClass);
 		InstancedActions.Add(Action);
+		Action->Spawn(Controller);
 		OnUtilityAIActionSpawned.Broadcast(Action);
 	}
 
 }
 
+bool UUtilityAIComponent::CheckLowestScore(UUtilityAIAction* Current, UUtilityAIAction* Best) const
+{
+	// fast case
+	if (!Best)
+		return true;
+
+	if (bInvertPriority && Best->LastScore == Current->LastScore)
+	{
+		return true;
+	}
+
+	if (Best->LastScore > Current->LastScore)
+	{
+		return true;
+	}
+
+
+	return false;
+}
+
+bool UUtilityAIComponent::CheckHighestScore(UUtilityAIAction* Current, UUtilityAIAction* Best) const
+{
+	// fast case
+	if (!Best)
+		return true;
+
+	if (bInvertPriority && Best->LastScore == Current->LastScore)
+	{
+		return true;
+	}
+
+	if (Best->LastScore < Current->LastScore)
+	{
+		return true;
+	}
+
+
+	return false;
+}
 
 // Called every frame
 void UUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -58,9 +98,16 @@ void UUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 		if (bIgnoreZeroScore && Action->LastScore == 0)
 			continue;
 
-		if (!BestAction || BestAction->LastScore < Action->LastScore)
+		if (bUseLowestScore)
 		{
-			BestAction = Action;
+			if (CheckLowestScore(Action, BestAction))
+				BestAction = Action;
+
+		}
+		else
+		{
+			if (CheckHighestScore(Action, BestAction))
+				BestAction = Action;
 		}
 	}
 
