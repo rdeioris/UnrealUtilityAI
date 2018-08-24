@@ -35,6 +35,7 @@ void UUtilityAIComponent::BeginPlay()
 		OnUtilityAIActionSpawned.Broadcast(Action);
 	}
 
+	OnUtilityAIInitialized.Broadcast();
 }
 
 bool UUtilityAIComponent::CheckLowestScore(UUtilityAIAction* Current, UUtilityAIAction* Best) const
@@ -156,3 +157,12 @@ TArray<UUtilityAIAction*> UUtilityAIComponent::GetActionInstances() const
 	return InstancedActions.Array();
 }
 
+UUtilityAIAction*  UUtilityAIComponent::GetActionInstanceByClass(TSubclassOf<UUtilityAIAction> ActionClass) const
+{
+	for (UUtilityAIAction* Action : InstancedActions)
+	{
+		if (Action->GetClass() == ActionClass)
+			return Action;
+	}
+	return nullptr;
+}

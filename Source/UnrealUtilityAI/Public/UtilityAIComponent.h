@@ -10,6 +10,7 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUtilityAIActionSpawned, UUtilityAIAction*, Action);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FUtilityAIActionChanged, UUtilityAIAction*, NewAction, UUtilityAIAction*, OldAction);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUtilityAIActionNotAvailable);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUtilityAIInitialized);
 
 
 UCLASS(BlueprintType, Blueprintable, ClassGroup = (AI), meta = (BlueprintSpawnableComponent))
@@ -53,15 +54,21 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Utility AI", meta = (DisplayName = "On UtilityAI Action Not Available"))
 	FUtilityAIActionNotAvailable OnUtilityAIActionNotAvailable;
 
+	UPROPERTY(BlueprintAssignable, Category = "Utility AI", meta = (DisplayName = "On UtilityAI Initialized"))
+	FUtilityAIInitialized OnUtilityAIInitialized;
+
 	UPROPERTY()
 	TSet<UUtilityAIAction*> InstancedActions;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Utility AI")
 	TArray<UUtilityAIAction*> GetActionInstances() const;
 
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Utility AI")
+	UUtilityAIAction* GetActionInstanceByClass(TSubclassOf<UUtilityAIAction> ActionClass) const;
+
 protected:
 
-	UUtilityAIAction * LastAction;
+	UUtilityAIAction* LastAction;
 	APawn* LastPawn;
 
 	bool CheckLowestScore(UUtilityAIAction* Current, UUtilityAIAction* Best) const;
