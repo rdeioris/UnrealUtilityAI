@@ -45,12 +45,12 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "Enter"))
 	void ReceiveEnter(AAIController* Controller, APawn* Pawn);
 
-	void Enter(AAIController* Controller, APawn* Pawn);
+	virtual void Enter(AAIController* Controller, APawn* Pawn);
 
 	UFUNCTION(BlueprintImplementableEvent, meta=(DisplayName="Exit"))
 	void ReceiveExit(AAIController* Controller, APawn* Pawn);
 
-	void Exit(AAIController* Controller, APawn* Pawn);
+	virtual void Exit(AAIController* Controller, APawn* Pawn);
 
 	UPROPERTY(BlueprintReadOnly)
 	float LastScore;
