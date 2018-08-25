@@ -1,6 +1,7 @@
 // Copyright 2018 Roberto De Ioris
 
 #include "UtilityAIComponent.h"
+#include "Runtime/Engine/Classes/Engine/World.h"
 
 
 // Sets default values for this component's properties
@@ -131,12 +132,24 @@ void UUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 	{
 		if (LastAction != BestAction)
 		{
-			OnUtilityAIActionChanged.Broadcast(BestAction, LastAction);
-			if (LastAction)
+			float CurrentTime = GetWorld()->GetTimeSeconds();
+			// avoid too fast action switching
+			if (CurrentTime - LastSwitchTime > Bounciness)
 			{
-				LastAction->Exit(Controller, LastPawn);
+				OnUtilityAIActionChanged.Broadcast(BestAction, LastAction);
+				if (LastAction)
+				{
+					LastAction->Exit(Controller, LastPawn);
+				}
+				BestAction->Enter(Controller, Pawn);
 			}
-			BestAction->Enter(Controller, Pawn);
+			else
+			{
+				// fast exit if nothing to run
+				if (!LastAction)
+					return;
+				BestAction = LastAction;
+			}
 		}
 		BestAction->Tick(DeltaTime, Controller, Pawn);
 		LastAction = BestAction;

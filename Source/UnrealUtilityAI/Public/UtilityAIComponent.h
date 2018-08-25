@@ -49,6 +49,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI")
 	float EqualityTolerance;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI")
+	float Bounciness;
+
 	UPROPERTY(BlueprintAssignable, Category = "Utility AI", meta = (DisplayName = "On UtilityAI Action Spawned"))
 	FUtilityAIActionSpawned OnUtilityAIActionSpawned;
 
@@ -84,6 +87,7 @@ protected:
 
 	UUtilityAIAction* LastAction;
 	APawn* LastPawn;
+	float LastSwitchTime;
 
 	bool CheckLowestScore(UUtilityAIAction* Current, UUtilityAIAction* Best) const;
 	bool CheckHighestScore(UUtilityAIAction* Current, UUtilityAIAction* Best) const;
