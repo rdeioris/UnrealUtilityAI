@@ -66,6 +66,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Utility AI")
 	UUtilityAIAction* GetActionInstanceByClass(TSubclassOf<UUtilityAIAction> ActionClass) const;
 
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Utility AI")
+	UUtilityAIAction* GetCurrentActionInstance() const;
+
 protected:
 
 	UUtilityAIAction* LastAction;

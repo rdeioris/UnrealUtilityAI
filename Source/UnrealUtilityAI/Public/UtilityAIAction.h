@@ -54,5 +54,8 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	float LastScore;
+
+	UPROPERTY(BlueprintReadOnly)
+	float LastCanRun;
 	
 };

@@ -105,7 +105,8 @@ void UUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 
 	for (UUtilityAIAction* Action : InstancedActions)
 	{
-		if (!Action->CanRun(Controller, Pawn))
+		Action->LastCanRun = Action->CanRun(Controller, Pawn);
+		if (!Action->LastCanRun)
 			continue;
 		Action->LastScore = Action->Score(Controller, Pawn);
 		if (bIgnoreZeroScore && Action->LastScore == 0)
@@ -165,4 +166,9 @@ UUtilityAIAction*  UUtilityAIComponent::GetActionInstanceByClass(TSubclassOf<UUt
 			return Action;
 	}
 	return nullptr;
+}
+
+UUtilityAIAction*  UUtilityAIComponent::GetCurrentActionInstance() const
+{
+	return LastAction;
 }
