@@ -11,6 +11,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FUtilityAIActionSpawned, UUtilityAIA
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FUtilityAIActionChanged, UUtilityAIAction*, NewAction, UUtilityAIAction*, OldAction);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUtilityAIActionNotAvailable);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUtilityAIInitialized);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUtilityAIBeforeScoreComputation);
 
 
 UCLASS(BlueprintType, Blueprintable, ClassGroup = (AI), meta = (BlueprintSpawnableComponent))
@@ -45,6 +46,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI")
 	bool bRandomizeOnEquality;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI")
+	float EqualityTolerance;
+
 	UPROPERTY(BlueprintAssignable, Category = "Utility AI", meta = (DisplayName = "On UtilityAI Action Spawned"))
 	FUtilityAIActionSpawned OnUtilityAIActionSpawned;
 
@@ -57,6 +61,10 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Utility AI", meta = (DisplayName = "On UtilityAI Initialized"))
 	FUtilityAIInitialized OnUtilityAIInitialized;
 
+	UPROPERTY(BlueprintAssignable, Category = "Utility AI", meta = (DisplayName = "On UtilityAI Before Score Computation"))
+	FUtilityAIBeforeScoreComputation OnUtilityAIBeforeScoreComputation;
+
+
 	UPROPERTY()
 	TSet<UUtilityAIAction*> InstancedActions;
 
@@ -68,6 +76,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Utility AI")
 	UUtilityAIAction* GetCurrentActionInstance() const;
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Utility AI")
+	TSubclassOf<UUtilityAIAction> GetCurrentActionClass() const;
 
 protected:
 

@@ -44,7 +44,7 @@ bool UUtilityAIComponent::CheckLowestScore(UUtilityAIAction* Current, UUtilityAI
 	if (!Best)
 		return true;
 
-	if (Best->LastScore == Current->LastScore)
+	if (FMath::Abs(Best->LastScore - Current->LastScore) <= EqualityTolerance)
 	{
 		if (bInvertPriority)
 			return true;
@@ -70,7 +70,7 @@ bool UUtilityAIComponent::CheckHighestScore(UUtilityAIAction* Current, UUtilityA
 	if (!Best)
 		return true;
 
-	if (Best->LastScore == Current->LastScore)
+	if (FMath::Abs(Best->LastScore - Current->LastScore) <= EqualityTolerance)
 	{
 		if (bInvertPriority)
 			return true;
@@ -98,6 +98,8 @@ void UUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 	AAIController* Controller = Cast<AAIController>(GetOwner());
 	if (!Controller)
 		return;
+
+	OnUtilityAIBeforeScoreComputation.Broadcast();
 
 	APawn* Pawn = Controller->GetPawn();
 
@@ -171,4 +173,9 @@ UUtilityAIAction*  UUtilityAIComponent::GetActionInstanceByClass(TSubclassOf<UUt
 UUtilityAIAction*  UUtilityAIComponent::GetCurrentActionInstance() const
 {
 	return LastAction;
+}
+
+TSubclassOf<UUtilityAIAction> UUtilityAIComponent::GetCurrentActionClass() const
+{
+	return LastAction ? LastAction->GetClass() : nullptr;
 }
