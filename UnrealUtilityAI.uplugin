@@ -16,7 +16,7 @@
 	"Modules": [
 		{
 			"Name": "UnrealUtilityAI",
-			"Type": "Developer",
+			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		}
 	]

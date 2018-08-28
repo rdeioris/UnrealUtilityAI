@@ -30,6 +30,9 @@ void UUtilityAIComponent::BeginPlay()
 	// instantiate actions
 	for (TSubclassOf<UUtilityAIAction> ActionClass : Actions)
 	{
+		// skip null
+		if (!ActionClass)
+			continue;
 		UUtilityAIAction* Action = NewObject<UUtilityAIAction>(Controller, ActionClass);
 		InstancedActions.Add(Action);
 		Action->Spawn(Controller);
@@ -128,6 +131,18 @@ void UUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 		}
 	}
 
+	if (MaxTicks > 0)
+	{
+		ExecutedTicks++;
+		if (ExecutedTicks >= MaxTicks)
+		{
+			ExecutedTicks = 0;
+			SetComponentTickEnabled(false);
+		}
+	}
+
+	OnUtilityAIActionChoosen.Broadcast(BestAction);
+
 	if (BestAction)
 	{
 		if (LastAction != BestAction)
@@ -154,6 +169,7 @@ void UUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 		BestAction->Tick(DeltaTime, Controller, Pawn);
 		LastAction = BestAction;
 		LastPawn = Pawn;
+		OnUtilityAIActionChoosen.Broadcast(BestAction);
 	}
 	else
 	{
@@ -173,7 +189,7 @@ TArray<UUtilityAIAction*> UUtilityAIComponent::GetActionInstances() const
 	return InstancedActions.Array();
 }
 
-UUtilityAIAction*  UUtilityAIComponent::GetActionInstanceByClass(TSubclassOf<UUtilityAIAction> ActionClass) const
+UUtilityAIAction* UUtilityAIComponent::GetActionInstanceByClass(TSubclassOf<UUtilityAIAction> ActionClass) const
 {
 	for (UUtilityAIAction* Action : InstancedActions)
 	{

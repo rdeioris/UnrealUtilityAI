@@ -56,6 +56,9 @@ public:
 	float LastScore;
 
 	UPROPERTY(BlueprintReadOnly)
-	float LastCanRun;
+	bool LastCanRun;
+
+	UPROPERTY(BlueprintReadOnly)
+	int32 ExecutedTicks;
 	
 };
