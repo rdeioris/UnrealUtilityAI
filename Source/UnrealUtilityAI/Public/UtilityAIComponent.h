@@ -54,12 +54,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI")
 	float Bounciness;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI")
-	int32 MaxTicks;
-
-	UPROPERTY(BlueprintReadOnly, Category = "Utility AI")
-	int32 ExecutedTicks;
-
 	UPROPERTY(BlueprintAssignable, Category = "Utility AI", meta = (DisplayName = "On UtilityAI Action Spawned"))
 	FUtilityAIActionSpawned OnUtilityAIActionSpawned;
 
@@ -96,6 +90,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Utility AI")
 	TSubclassOf<UUtilityAIAction> GetCurrentActionClass() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Utility AI")
+	UUtilityAIAction* SpawnActionInstance(TSubclassOf<UUtilityAIAction> ActionClass);
 
 protected:
 

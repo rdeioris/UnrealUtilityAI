@@ -23,23 +23,31 @@ void UUtilityAIComponent::BeginPlay()
 	LastAction = nullptr;
 	LastPawn = nullptr;
 
-	AAIController* Controller = Cast<AAIController>(GetOwner());
-	if (!Controller)
-		return;
-
 	// instantiate actions
 	for (TSubclassOf<UUtilityAIAction> ActionClass : Actions)
 	{
-		// skip null
-		if (!ActionClass)
-			continue;
-		UUtilityAIAction* Action = NewObject<UUtilityAIAction>(Controller, ActionClass);
-		InstancedActions.Add(Action);
-		Action->Spawn(Controller);
-		OnUtilityAIActionSpawned.Broadcast(Action);
+		SpawnActionInstance(ActionClass);
 	}
 
 	OnUtilityAIInitialized.Broadcast();
+}
+
+UUtilityAIAction* UUtilityAIComponent::SpawnActionInstance(TSubclassOf<UUtilityAIAction> ActionClass)
+{
+	// skip null
+	if (!ActionClass)
+		return nullptr;
+
+	AAIController* Controller = Cast<AAIController>(GetOwner());
+	if (!Controller)
+		return nullptr;
+
+	UUtilityAIAction* Action = NewObject<UUtilityAIAction>(Controller, ActionClass);
+	InstancedActions.Add(Action);
+	Action->Spawn(Controller);
+	OnUtilityAIActionSpawned.Broadcast(Action);
+
+	return Action;
 }
 
 bool UUtilityAIComponent::CheckLowestScore(UUtilityAIAction* Current, UUtilityAIAction* Best) const
@@ -128,16 +136,6 @@ void UUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 		{
 			if (CheckHighestScore(Action, BestAction))
 				BestAction = Action;
-		}
-	}
-
-	if (MaxTicks > 0)
-	{
-		ExecutedTicks++;
-		if (ExecutedTicks >= MaxTicks)
-		{
-			ExecutedTicks = 0;
-			SetComponentTickEnabled(false);
 		}
 	}
 
