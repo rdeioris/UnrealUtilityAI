@@ -94,6 +94,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Utility AI")
 	UUtilityAIAction* SpawnActionInstance(TSubclassOf<UUtilityAIAction> ActionClass);
 
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Utility AI")
+	bool CanSpawnActionInstance(TSubclassOf<UUtilityAIAction> ActionClass) const;
+
 protected:
 
 	UUtilityAIAction* LastAction;

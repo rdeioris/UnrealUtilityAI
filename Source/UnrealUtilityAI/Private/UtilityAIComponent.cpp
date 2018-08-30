@@ -32,10 +32,24 @@ void UUtilityAIComponent::BeginPlay()
 	OnUtilityAIInitialized.Broadcast();
 }
 
+bool UUtilityAIComponent::CanSpawnActionInstance(TSubclassOf<UUtilityAIAction> ActionClass) const
+{
+	for (UUtilityAIAction* Action : InstancedActions)
+	{
+		if (Action->GetClass() == ActionClass)
+			return false;
+	}
+	return true;
+}
+
 UUtilityAIAction* UUtilityAIComponent::SpawnActionInstance(TSubclassOf<UUtilityAIAction> ActionClass)
 {
 	// skip null
 	if (!ActionClass)
+		return nullptr;
+
+	// avoid duplicates
+	if (!CanSpawnActionInstance(ActionClass))
 		return nullptr;
 
 	AAIController* Controller = Cast<AAIController>(GetOwner());
