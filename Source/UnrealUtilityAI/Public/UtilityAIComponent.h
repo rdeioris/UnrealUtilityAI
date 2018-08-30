@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Runtime/Core/Public/Math/RandomStream.h"
 #include "UtilityAIAction.h"
 #include "UtilityAIComponent.generated.h"
 
@@ -97,11 +98,22 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Utility AI")
 	bool CanSpawnActionInstance(TSubclassOf<UUtilityAIAction> ActionClass) const;
 
+	UFUNCTION(BlueprintCallable, Category = "Utility AI")
+	void SetRandomStream(FRandomStream InRandomStream);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Utility AI")
+	FRandomStream GetRandomStream() const;
+
 protected:
 
 	UUtilityAIAction* LastAction;
 	APawn* LastPawn;
 	float LastSwitchTime;
+
+	bool bUseRandomStream;
+	FRandomStream RandomStream;
+
+	bool InternalRandBool() const;
 
 	bool CheckLowestScore(UUtilityAIAction* Current, UUtilityAIAction* Best) const;
 	bool CheckHighestScore(UUtilityAIAction* Current, UUtilityAIAction* Best) const;

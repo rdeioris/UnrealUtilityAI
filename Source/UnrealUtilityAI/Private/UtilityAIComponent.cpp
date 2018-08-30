@@ -64,6 +64,16 @@ UUtilityAIAction* UUtilityAIComponent::SpawnActionInstance(TSubclassOf<UUtilityA
 	return Action;
 }
 
+bool UUtilityAIComponent::InternalRandBool() const
+{
+	float r = 0;
+	if (bUseRandomStream)
+		r = RandomStream.FRandRange(0.0f, 1.0f);
+	else
+		r = FMath::RandRange(0.0f, 1.0f);
+	return 0.5f > r;
+}
+
 bool UUtilityAIComponent::CheckLowestScore(UUtilityAIAction* Current, UUtilityAIAction* Best) const
 {
 	// fast case
@@ -76,7 +86,7 @@ bool UUtilityAIComponent::CheckLowestScore(UUtilityAIAction* Current, UUtilityAI
 			return true;
 		if (bRandomizeOnEquality)
 		{
-			return 0.5f > FMath::RandRange(0.0f, 1.0f);
+			return InternalRandBool();
 		}
 		return false;
 	}
@@ -102,7 +112,7 @@ bool UUtilityAIComponent::CheckHighestScore(UUtilityAIAction* Current, UUtilityA
 			return true;
 		if (bRandomizeOnEquality)
 		{
-			return 0.5f > FMath::RandRange(0.0f, 1.0f);
+			return InternalRandBool();
 		}
 		return false;
 	}
@@ -219,4 +229,15 @@ UUtilityAIAction*  UUtilityAIComponent::GetCurrentActionInstance() const
 TSubclassOf<UUtilityAIAction> UUtilityAIComponent::GetCurrentActionClass() const
 {
 	return LastAction ? LastAction->GetClass() : nullptr;
+}
+
+void UUtilityAIComponent::SetRandomStream(FRandomStream InRandomStream)
+{
+	RandomStream = InRandomStream;
+	bUseRandomStream = true;
+}
+
+FRandomStream UUtilityAIComponent::GetRandomStream() const
+{
+	return RandomStream;
 }
