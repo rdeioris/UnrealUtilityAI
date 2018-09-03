@@ -154,7 +154,6 @@ void UUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 		{
 			if (CheckLowestScore(Action, BestAction))
 				BestAction = Action;
-
 		}
 		else
 		{
@@ -191,7 +190,7 @@ void UUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 		BestAction->Tick(DeltaTime, Controller, Pawn);
 		LastAction = BestAction;
 		LastPawn = Pawn;
-		OnUtilityAIActionChoosen.Broadcast(BestAction);
+		OnUtilityAIActionTicked.Broadcast(BestAction);
 	}
 	else
 	{
