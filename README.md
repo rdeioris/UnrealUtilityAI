@@ -31,3 +31,7 @@ At every Tick this component will compute the score of each valid action (read: 
 * InvertPriority (actions are evaluated in the order they have been inserted in the set. The first inserted action will have the highest priority. By inverting priority, in the case of equivalent values, the last inserted action will win)
 * RandomizeOnEquality (instead of using prioriry, simply randomize the choice for equivalent scores)
 * EqualityTolerance (as the Score() function returns floats, you may want to add a threshold value when comparing scores for equality)
+
+## Functional Tests
+
+In the Content folder is included a level (UtilityAI_Tests) for functional tests. Just click on 'Refresh Tests' in the Automation tool to discover them (if not already discovered) and run them.
