@@ -104,6 +104,11 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Utility AI")
 	FRandomStream GetRandomStream() const;
 
+	UFUNCTION(BlueprintNativeEvent, Category = "Utility AI", meta = (DisplayName = "Score Filter"))
+	float ScoreFilter(UUtilityAIAction* Action, float Score) const;
+
+	float ScoreFilter_Implementation(UUtilityAIAction* Action, float Score) const { return Score; }
+
 protected:
 
 	UUtilityAIAction* LastAction;

@@ -146,7 +146,7 @@ void UUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 		Action->LastCanRun = Action->CanRun(Controller, Pawn);
 		if (!Action->LastCanRun)
 			continue;
-		Action->LastScore = Action->Score(Controller, Pawn);
+		Action->LastScore = ScoreFilter(Action, Action->Score(Controller, Pawn));
 		if (bIgnoreZeroScore && Action->LastScore == 0)
 			continue;
 
