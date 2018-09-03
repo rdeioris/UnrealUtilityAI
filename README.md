@@ -20,6 +20,8 @@ An action is composed by the following methods/events (all overridable):
 * Enter (called whenever the brain switches from another action to this one)
 * Exit (called whenever the brain switches to another action)
 
+To create UtilityAIAction's with blueprints, just create a new blueprint inheriting from UtilityAIAction and override the related functions/events.
+
 ## UUtilityAIComponent
 
 This is the C++ ActorComponent (can be a parent for blueprints too) you will attach to AIController's.
