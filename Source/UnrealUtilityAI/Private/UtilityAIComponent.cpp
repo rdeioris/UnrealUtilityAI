@@ -23,6 +23,8 @@ void UUtilityAIComponent::BeginPlay()
 	LastAction = nullptr;
 	LastPawn = nullptr;
 
+	LastSwitchTime = 0;
+
 	// instantiate actions
 	for (TSubclassOf<UUtilityAIAction> ActionClass : Actions)
 	{
@@ -170,7 +172,7 @@ void UUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 		{
 			float CurrentTime = GetWorld()->GetTimeSeconds();
 			// avoid too fast action switching
-			if (CurrentTime - LastSwitchTime > Bounciness)
+			if (LastSwitchTime == 0 || CurrentTime - LastSwitchTime > Bounciness)
 			{
 				OnUtilityAIActionChanged.Broadcast(BestAction, LastAction);
 				if (LastAction)
@@ -178,6 +180,7 @@ void UUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 					LastAction->Exit(Controller, LastPawn);
 				}
 				BestAction->Enter(Controller, Pawn);
+				LastSwitchTime = CurrentTime;
 			}
 			else
 			{
