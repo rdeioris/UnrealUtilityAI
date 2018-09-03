@@ -57,8 +57,5 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	bool LastCanRun;
-
-	UPROPERTY(BlueprintReadOnly)
-	int32 ExecutedTicks;
 	
 };

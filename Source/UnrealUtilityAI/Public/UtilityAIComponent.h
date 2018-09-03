@@ -76,6 +76,13 @@ public:
 	UPROPERTY(BlueprintAssignable, Category = "Utility AI", meta = (DisplayName = "On UtilityAI Before Score Computation"))
 	FUtilityAIBeforeScoreComputation OnUtilityAIBeforeScoreComputation;
 
+	UFUNCTION(BlueprintNativeEvent, meta = (DisplayName = "Compute Best Action"))
+	UUtilityAIAction* ReceiveComputeBestAction(AAIController* Controller, APawn* Pawn);
+
+	UUtilityAIAction* ReceiveComputeBestAction_Implementation(AAIController* Controller, APawn* Pawn);
+
+	virtual UUtilityAIAction* ComputeBestAction(AAIController* Controller, APawn* Pawn);
+
 
 	UPROPERTY()
 	TSet<UUtilityAIAction*> InstancedActions;

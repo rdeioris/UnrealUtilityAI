@@ -128,19 +128,8 @@ bool UUtilityAIComponent::CheckHighestScore(UUtilityAIAction* Current, UUtilityA
 	return false;
 }
 
-// Called every frame
-void UUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+UUtilityAIAction* UUtilityAIComponent::ReceiveComputeBestAction_Implementation(AAIController* Controller, APawn* Pawn)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	AAIController* Controller = Cast<AAIController>(GetOwner());
-	if (!Controller)
-		return;
-
-	OnUtilityAIBeforeScoreComputation.Broadcast();
-
-	APawn* Pawn = Controller->GetPawn();
-
 	UUtilityAIAction* BestAction = nullptr;
 
 	for (UUtilityAIAction* Action : InstancedActions)
@@ -163,6 +152,24 @@ void UUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 				BestAction = Action;
 		}
 	}
+
+	return BestAction;
+}
+
+// Called every frame
+void UUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	AAIController* Controller = Cast<AAIController>(GetOwner());
+	if (!Controller)
+		return;
+
+	OnUtilityAIBeforeScoreComputation.Broadcast();
+
+	APawn* Pawn = Controller->GetPawn();
+
+	UUtilityAIAction* BestAction = ComputeBestAction(Controller, Pawn);
 
 	OnUtilityAIActionChoosen.Broadcast(BestAction);
 
@@ -242,4 +249,9 @@ void UUtilityAIComponent::SetRandomStream(FRandomStream InRandomStream)
 FRandomStream UUtilityAIComponent::GetRandomStream() const
 {
 	return RandomStream;
+}
+
+UUtilityAIAction* UUtilityAIComponent::ComputeBestAction(AAIController* Controller, APawn* Pawn)
+{
+	return ReceiveComputeBestAction(Controller, Pawn);
 }
