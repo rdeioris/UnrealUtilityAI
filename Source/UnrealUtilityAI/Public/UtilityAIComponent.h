@@ -55,6 +55,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI")
 	float Bounciness;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Utility AI")
+	bool bCanRunWithoutPawn;
+
 	UPROPERTY(BlueprintAssignable, Category = "Utility AI", meta = (DisplayName = "On UtilityAI Action Spawned"))
 	FUtilityAIActionSpawned OnUtilityAIActionSpawned;
 
