@@ -2,6 +2,11 @@
 
 #include "UtilityAIAction.h"
 
+UUtilityAIAction::UUtilityAIAction()
+{
+	bMarkedForDeath = false;
+}
+
 UWorld* UUtilityAIAction::GetWorld() const
 {
 	UObject* Outer = GetOuter();
@@ -42,5 +47,20 @@ void UUtilityAIAction::Exit(AAIController* Controller, APawn* Pawn)
 void UUtilityAIAction::Spawn(AAIController* Controller)
 {
 	ReceiveSpawn(Controller);
+}
+
+void UUtilityAIAction::Kill()
+{
+	bMarkedForDeath = true;
+}
+
+bool UUtilityAIAction::IsMarkedForDeath()
+{
+	return bMarkedForDeath;
+}
+
+void UUtilityAIAction::Resurrect()
+{
+	bMarkedForDeath = false;
 }
 

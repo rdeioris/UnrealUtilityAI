@@ -136,7 +136,7 @@ UUtilityAIAction* UUtilityAIComponent::ReceiveComputeBestAction_Implementation(A
 
 	for (UUtilityAIAction* Action : InstancedActions)
 	{
-		Action->LastCanRun = Action->CanRun(Controller, Pawn);
+		Action->LastCanRun = !Action->IsMarkedForDeath() && Action->CanRun(Controller, Pawn);
 		if (!Action->LastCanRun)
 			continue;
 		Action->LastScore = ScoreFilter(Action, Action->Score(Controller, Pawn));
@@ -217,6 +217,7 @@ void UUtilityAIComponent::TickComponent(float DeltaTime, ELevelTick TickType, FA
 	{
 		OnUtilityAIActionChanged.Broadcast(nullptr, LastAction);
 		LastAction->Exit(Controller, LastPawn);
+		LastAction->Resurrect();
 		LastAction = nullptr;
 		LastPawn = nullptr;
 	}

@@ -18,6 +18,8 @@ class UNREALUTILITYAI_API UUtilityAIAction : public UObject
 
 public:
 
+	UUtilityAIAction();
+
 	virtual UWorld* GetWorld() const override;
 
 	UFUNCTION(BlueprintImplementableEvent, meta = (DisplayName = "Spawn"))
@@ -57,5 +59,17 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	bool LastCanRun;
+
+	UFUNCTION(BlueprintCallable)
+	void Kill();
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	bool IsMarkedForDeath();
+
+	UFUNCTION(BlueprintCallable)
+	void Resurrect();
+
+private:
+	bool bMarkedForDeath;
 	
 };
